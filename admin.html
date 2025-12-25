@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AEC · Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&family=Space+Grotesk:wght@500&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0b0c10;
+      --surface:#12131c;
+      --surface-2:#191a26;
+      --accent:#f5b544;
+      --accent-2:#5ad2c7;
+      --text:#eef1f7;
+      --muted:#9aa1b9;
+      --border:rgba(255,255,255,0.10);
+      --danger:#ff4d4d;
+      --ok:#26d07c;
+    }
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{
+      font-family:'Manrope',system-ui,sans-serif;
+      background:
+        radial-gradient(140% 140% at 10% 10%,rgba(90,210,199,0.06),transparent 40%),
+        radial-gradient(130% 130% at 80% 0,rgba(245,181,68,0.08),transparent 45%),
+        var(--bg);
+      color:var(--text);
+      padding:26px 16px 60px;
+    }
+    .wrap{max-width:1100px;margin:0 auto;}
+    header{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      margin-bottom:16px;
+    }
+    .brand{display:flex;align-items:center;gap:10px;}
+    .brand img{width:40px;height:40px;object-fit:contain;}
+    .brand h1{
+      font-family:'Space Grotesk','Manrope',sans-serif;
+      font-size:1.2rem;
+      letter-spacing:-0.02em;
+    }
+    .card{
+      background:rgba(18,19,28,0.92);
+      border:1px solid var(--border);
+      border-radius:18px;
+      padding:16px;
+      box-shadow:0 24px 70px rgba(0,0,0,0.55);
+      margin-top:14px;
+    }
+    .row{
+      display:grid;
+      grid-template-columns:1.2fr .8fr;
+      gap:14px;
+    }
+    @media(max-width:900px){ .row{grid-template-columns:1fr;} }
+    input{
+      width:100%;
+      background:rgba(255,255,255,0.03);
+      border:1px solid rgba(255,255,255,0.10);
+      border-radius:12px;
+      padding:12px 14px;
+      color:var(--text);
+      font-size:15px;
+      outline:none;
+    }
+    input:focus{border-color:rgba(245,181,68,0.45);}
+    .btn{
+      padding:11px 14px;
+      border-radius:12px;
+      border:1px solid transparent;
+      cursor:pointer;
+      font-weight:800;
+      font-size:0.92rem;
+      user-select:none;
+    }
+    .btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent-2)); color:#0b0c10;}
+    .btn-ghost{background:rgba(255,255,255,0.03); border-color:rgba(255,255,255,0.10); color:var(--text);}
+    .btn-ok{background:rgba(38,208,124,0.18); border-color:rgba(38,208,124,0.35); color:#baf7d7;}
+    .btn-bad{background:rgba(255,77,77,0.14); border-color:rgba(255,77,77,0.35); color:#ffd0d0;}
+    .btn:disabled{opacity:.6; cursor:default;}
+    .muted{color:var(--muted);}
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:12px;
+      margin-top:12px;
+    }
+    .item{
+      background:rgba(25,26,38,0.72);
+      border:1px solid rgba(255,255,255,0.09);
+      border-radius:16px;
+      padding:14px;
+    }
+    .item h3{font-size:1.05rem; margin-bottom:6px;}
+    .meta{font-size:0.86rem; color:var(--muted); line-height:1.4;}
+    .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+    .pill{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:6px 10px;border-radius:999px;
+      border:1px solid rgba(255,255,255,0.12);
+      background:rgba(255,255,255,0.02);
+      font-size:0.8rem;color:var(--muted);
+      margin-top:8px;
+    }
+    .status{
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.10);
+      background:rgba(255,255,255,0.02);
+      color:var(--muted);
+      font-size:0.9rem;
+      line-height:1.45;
+    }
+    .status.ok{border-color:rgba(38,208,124,0.35); color:#baf7d7;}
+    .status.bad{border-color:rgba(255,77,77,0.35); color:#ffd0d0;}
+    .status.warn{border-color:rgba(245,181,68,0.35); color:#ffe7b8;}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <img src="multimedia/logo.png" alt="AEC">
+        <h1>Admin · Verificación de usuarios</h1>
+      </div>
+    </header>
+
+    <div class="card">
+      <div class="row">
+        <div>
+          <div class="muted" style="margin-bottom:8px;">
+            Seguridad simple: pon una clave de admin (solo tú la sabes) para entrar al panel.
+          </div>
+          <input id="adminKey" type="password" placeholder="Clave admin (pon la tuya aquí)">
+          <div class="muted" style="margin-top:8px;">
+            Tip: cambia la clave dentro del código donde dice <b>ADMIN_KEY</b>.
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:flex-end;">
+          <button class="btn btn-primary" id="btnEnter">Entrar</button>
+          <button class="btn btn-ghost" id="btnRefresh" disabled>Actualizar</button>
+        </div>
+      </div>
+
+      <div id="adminStatus" class="status warn" style="margin-top:12px;">
+        Bloqueado hasta que pongas la clave admin.
+      </div>
+    </div>
+
+    <div class="card">
+      <h2 style="font-size:1.2rem;letter-spacing:-0.02em;">Solicitudes pendientes</h2>
+      <div class="muted">Aquí apruebas o bloqueas. Al aprobar, ese usuario podrá entrar desde su dispositivo.</div>
+      <div id="pendingGrid" class="grid"></div>
+    </div>
+
+    <div class="card">
+      <h2 style="font-size:1.2rem;letter-spacing:-0.02em;">Búsqueda rápida</h2>
+      <div class="muted">Busca un usuario por nombre (por si quieres bloquearlo).</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;">
+        <input id="searchName" type="text" placeholder="Ej. Juan Pérez" style="flex:1;min-width:240px;">
+        <button class="btn btn-ghost" id="btnSearch" disabled>Buscar</button>
+      </div>
+      <div id="searchResult" class="status hidden" style="margin-top:12px;"></div>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-firestore-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDPa3DeBQBwl3riqgiZQYXuwHww5kh1i6Y",
+      authDomain: "academic-evidence-collective.firebaseapp.com",
+      databaseURL: "https://academic-evidence-collective-default-rtdb.firebaseio.com",
+      projectId: "academic-evidence-collective",
+      storageBucket: "academic-evidence-collective.appspot.com",
+      messagingSenderId: "505714699134",
+      appId: "1:505714699134:web:fa39865453a4aa088e612f",
+      measurementId: "G-8KR4SNMV0C"
+    };
+
+    const fs = firebase.firestore();
+
+    // ====== CAMBIA ESTA CLAVE ======
+    const ADMIN_KEY = "Josue155_"; 
+
+    const adminKey = document.getElementById('adminKey');
+    const btnEnter = document.getElementById('btnEnter');
+    const btnRefresh = document.getElementById('btnRefresh');
+    const adminStatus = document.getElementById('adminStatus');
+
+    const pendingGrid = document.getElementById('pendingGrid');
+
+    const searchName = document.getElementById('searchName');
+    const btnSearch = document.getElementById('btnSearch');
+    const searchResult = document.getElementById('searchResult');
+
+    let unlocked = false;
+
+    function norm(s){ return (s||'').trim().replace(/\s+/g,' '); }
+    function lower(s){ return norm(s).toLowerCase(); }
+
+    function setStatus(type, msg){
+      adminStatus.className = 'status ' + type;
+      adminStatus.textContent = msg;
+    }
+
+    function showResult(type, msg){
+      searchResult.className = 'status ' + type;
+      searchResult.textContent = msg;
+      searchResult.classList.remove('hidden');
+    }
+
+    function fmtTs(ts){
+      try{
+        if(!ts) return '—';
+        const d = ts.toDate ? ts.toDate() : new Date(ts);
+        return d.toLocaleString('es-EC');
+      }catch(e){
+        return '—';
+      }
+    }
+
+    async function loadPending(){
+      pendingGrid.innerHTML = '<div class="muted">Cargando...</div>';
+
+      const snap = await fs.collection('pendingVerifications')
+        .orderBy('requestedAt','desc')
+        .limit(50)
+        .get();
+
+      if(snap.empty){
+        pendingGrid.innerHTML = '<div class="muted">No hay solicitudes pendientes.</div>';
+        return;
+      }
+
+      pendingGrid.innerHTML = '';
+      snap.forEach(doc => {
+        const p = doc.data() || {};
+        const el = document.createElement('div');
+        el.className = 'item';
+
+        el.innerHTML = `
+          <h3>${p.name || 'Sin nombre'}</h3>
+          <div class="meta">
+            <div><b>Fecha:</b> ${fmtTs(p.requestedAt)}</div>
+            <div><b>Dispositivo:</b> ${p.deviceLabel || '—'}</div>
+            <div><b>deviceId:</b> <code>${p.deviceId || '—'}</code></div>
+          </div>
+          <div class="pill">userId: <code>${p.userId || '—'}</code></div>
+          <div class="actions">
+            <button class="btn btn-ok">Verificar</button>
+            <button class="btn btn-bad">Bloquear</button>
+          </div>
+        `;
+
+        const [btnOk, btnBad] = el.querySelectorAll('button');
+
+        btnOk.addEventListener('click', async () => {
+          btnOk.disabled = true; btnBad.disabled = true;
+          try{
+            await fs.collection('users').doc(p.userId).update({ status:'verified' });
+            await fs.collection('pendingVerifications').doc(doc.id).delete();
+            setStatus('ok', 'Usuario verificado: ' + (p.name || ''));
+            loadPending();
+          }catch(err){
+            console.error(err);
+            setStatus('bad', 'Error verificando.');
+          }finally{
+            btnOk.disabled = false; btnBad.disabled = false;
+          }
+        });
+
+        btnBad.addEventListener('click', async () => {
+          btnOk.disabled = true; btnBad.disabled = true;
+          try{
+            await fs.collection('users').doc(p.userId).update({ status:'blocked' });
+            await fs.collection('pendingVerifications').doc(doc.id).delete();
+            setStatus('bad', 'Usuario bloqueado: ' + (p.name || ''));
+            loadPending();
+          }catch(err){
+            console.error(err);
+            setStatus('bad', 'Error bloqueando.');
+          }finally{
+            btnOk.disabled = false; btnBad.disabled = false;
+          }
+        });
+
+        pendingGrid.appendChild(el);
+      });
+    }
+
+    btnEnter.addEventListener('click', async () => {
+      if(norm(adminKey.value) !== ADMIN_KEY){
+        setStatus('bad', 'Clave admin incorrecta.');
+        return;
+      }
+      unlocked = true;
+      setStatus('ok', 'Panel desbloqueado.');
+      btnRefresh.disabled = false;
+      btnSearch.disabled = false;
+      loadPending();
+    });
+
+    btnRefresh.addEventListener('click', () => {
+      if(!unlocked) return;
+      loadPending();
+    });
+
+    btnSearch.addEventListener('click', async () => {
+      if(!unlocked) return;
+      const name = norm(searchName.value);
+      if(!name){
+        showResult('bad', 'Escribe un nombre para buscar.');
+        return;
+      }
+
+      try{
+        const q = await fs.collection('users')
+          .where('nameLower','==', lower(name))
+          .limit(1)
+          .get();
+
+        if(q.empty){
+          showResult('bad', 'No existe ese usuario.');
+          return;
+        }
+
+        const doc = q.docs[0];
+        const u = doc.data() || {};
+
+        showResult('warn',
+          `Encontrado: ${u.name}\nEstado: ${u.status}\nID: ${doc.id}`
+        );
+
+        // Botones rápidos
+        const wrap = document.createElement('div');
+        wrap.style.marginTop = '10px';
+        wrap.style.display = 'flex';
+        wrap.style.gap = '10px';
+        wrap.style.flexWrap = 'wrap';
+
+        const bOk = document.createElement('button');
+        bOk.className = 'btn btn-ok';
+        bOk.textContent = 'Verificar';
+
+        const bBad = document.createElement('button');
+        bBad.className = 'btn btn-bad';
+        bBad.textContent = 'Bloquear';
+
+        wrap.appendChild(bOk);
+        wrap.appendChild(bBad);
+        searchResult.appendChild(wrap);
+
+        bOk.addEventListener('click', async () => {
+          bOk.disabled = true; bBad.disabled = true;
+          try{
+            await fs.collection('users').doc(doc.id).update({ status:'verified' });
+            showResult('ok', 'Listo: verificado.');
+            loadPending();
+          }catch(err){
+            console.error(err);
+            showResult('bad', 'Error verificando.');
+          }finally{
+            bOk.disabled = false; bBad.disabled = false;
+          }
+        });
+
+        bBad.addEventListener('click', async () => {
+          bOk.disabled = true; bBad.disabled = true;
+          try{
+            await fs.collection('users').doc(doc.id).update({ status:'blocked' });
+            showResult('bad', 'Listo: bloqueado.');
+            loadPending();
+          }catch(err){
+            console.error(err);
+            showResult('bad', 'Error bloqueando.');
+          }finally{
+            bOk.disabled = false; bBad.disabled = false;
+          }
+        });
+
+      }catch(err){
+        console.error(err);
+        showResult('bad', 'Error buscando.');
+      }
+    });
+  </script>
+</body>
+</html>

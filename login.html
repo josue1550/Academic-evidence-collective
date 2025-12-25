@@ -1,0 +1,49 @@
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+  import {
+    getFirestore,
+    collection,
+    addDoc,
+    serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDPa3DeBQBwl3riqgiZQYXuwHww5kh1i6Y",
+    authDomain: "academic-evidence-collective.firebaseapp.com",
+    projectId: "academic-evidence-collective",
+    storageBucket: "academic-evidence-collective.firebasestorage.app",
+    messagingSenderId: "505714699134",
+    appId: "1:505714699134:web:fa39865453a4aa088e612f"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  async function getIP() {
+    try {
+      const r = await fetch("https://api.ipify.org?format=json", { cache: "no-store" });
+      const j = await r.json();
+      return j.ip || "unknown";
+    } catch {
+      return "unknown";
+    }
+  }
+
+  async function logVisit() {
+    const ip = await getIP();
+
+    await addDoc(collection(db, "visits"), {
+      ip,
+      userAgent: navigator.userAgent,
+      platform: navigator.platform,
+      language: navigator.language,
+      screen: `${screen.width}x${screen.height}`,
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      page: location.pathname,
+      referrer: document.referrer || "",
+      createdAt: serverTimestamp()
+    });
+  }
+
+  logVisit().catch(console.error);
+</script>

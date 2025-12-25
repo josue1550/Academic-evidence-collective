@@ -1,0 +1,1177 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Academic Evidence Collective</title>
+  <link rel="icon" href="./favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&family=Space+Grotesk:wght@500&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0b0c10;
+      --surface:#12131c;
+      --surface-2:#191a26;
+      --accent:#f5b544;
+      --accent-2:#5ad2c7;
+      --text:#eef1f7;
+      --muted:#9aa1b9;
+      --border:rgba(255,255,255,0.08);
+      --glow:0 15px 80px rgba(245,181,68,0.18);
+    }
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:'Manrope', system-ui, sans-serif;
+      background: #0d0e12;
+      color: #e5e7eb;
+      line-height:1.6;
+      -webkit-font-smoothing:antialiased;
+      font-size:16px;
+    }
+    a{color:inherit;text-decoration:none;}
+    img{max-width:100%;display:block;}
+    section{
+      padding:80px 7vw;
+      max-width:1200px;
+      margin:0 auto;
+    }
+    h2{
+      font-size:clamp(1.5rem,2.4vw,2.2rem);
+      margin-bottom:12px;
+      letter-spacing:-0.02em;
+    }
+    p.lead{
+      color:var(--muted);
+      max-width:720px;
+    }
+
+    /* Header */
+    header{
+      position:fixed;
+      top:0;left:0;right:0;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:18px 7vw;
+      background:rgba(11,12,16,0.92);
+      border-bottom:1px solid var(--border);
+      backdrop-filter:blur(16px);
+      z-index:1000;
+    }
+    .logo{
+      font-family:'Space Grotesk','Manrope',sans-serif;
+      font-weight:600;
+      letter-spacing:0.02em;
+      display:flex;align-items:center;gap:10px;
+      cursor:pointer;
+      font-size:clamp(0.9rem,1.7vw,1rem);
+    }
+    .logo-img{
+      height:46px;
+      width:auto;
+      object-fit:contain;
+      margin-right:6px;
+      filter:drop-shadow(0 0 6px rgba(255,0,0,0.35));
+      transition:transform 0.2s ease, filter 0.2s ease;
+    }
+    .logo:hover .logo-img{
+      transform:translateY(-1px);
+      filter:drop-shadow(0 0 10px rgba(255,0,0,0.6));
+    }
+
+    nav{
+      display:flex;
+      align-items:center;
+    }
+    nav a{
+      margin-left:22px;font-weight:600;color:var(--muted);
+      padding:8px 0;position:relative;transition:color 0.2s;
+      font-size:0.95rem;
+    }
+    nav a::after{
+      content:"";position:absolute;left:0;bottom:0;height:2px;width:0;
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      transition:width 0.25s ease;
+    }
+    nav a:hover{color:var(--text);}
+    nav a:hover::after{width:100%;}
+
+    /* Botón menú móvil */
+    .menu-toggle{
+      display:none;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,0.02);
+      border-radius:999px;
+      padding:8px 12px;
+      cursor:pointer;
+      font-size:0.9rem;
+      color:var(--text);
+      align-items:center;
+      gap:6px;
+    }
+    .menu-toggle .menu-icon{
+      display:block;
+      width:16px;
+      height:2px;
+      background:var(--text);
+      position:relative;
+    }
+    .menu-toggle .menu-icon::before,
+    .menu-toggle .menu-icon::after{
+      content:"";
+      position:absolute;
+      left:0;
+      width:16px;
+      height:2px;
+      background:var(--text);
+    }
+    .menu-toggle .menu-icon::before{top:-5px;}
+    .menu-toggle .menu-icon::after{top:5px;}
+    .menu-toggle .menu-label{
+      font-size:0.85rem;
+    }
+
+    /* Hero */
+    .hero{
+      padding:160px 7vw 120px;
+      display:block;
+    }
+    .hero h1{
+      font-size:clamp(2.1rem,4.5vw,3.3rem);
+      line-height:1.1;
+      letter-spacing:-0.03em;
+      margin-bottom:12px;
+    }
+    .hero p{
+      color:var(--muted);
+      font-size:clamp(0.95rem,1.1rem,1.125rem);
+      max-width:620px;
+    }
+    .badges{
+      display:flex;gap:12px;margin:20px 0 26px;flex-wrap:wrap;
+    }
+    .badge{
+      border:1px solid var(--border);
+      padding:10px 14px;border-radius:999px;
+      background:rgba(255,255,255,0.02);
+      color:var(--text);font-weight:600;font-size:13px;
+      display:inline-flex;align-items:center;gap:8px;
+    }
+    .cta{
+      display:flex;gap:12px;flex-wrap:wrap;align-items:center;
+    }
+    .btn{
+      padding:14px 18px;border-radius:12px;border:1px solid transparent;
+      font-weight:700;cursor:pointer;font-size:15px;
+      transition: transform 0.15s ease, box-shadow 0.2s, border-color 0.2s;
+    }
+    .btn-primary{
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      color:#0b0c10;box-shadow:var(--glow);
+    }
+    .btn-outline{
+      border-color:var(--border);background:rgba(255,255,255,0.02);
+      color:var(--text);
+    }
+    .btn:hover{transform:translateY(-2px);}
+
+    /* Grids */
+    .pillars{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+      gap:18px;margin-top:30px;
+    }
+    .card{
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:20px;
+      box-shadow:0 20px 60px rgba(0,0,0,0.4);
+      transition:transform 0.2s ease,border-color 0.2s;
+    }
+    .card:hover{
+      transform:translateY(-4px);
+      border-color:rgba(245,181,68,0.3);
+    }
+    .card small{
+      color:var(--muted);font-weight:600;letter-spacing:0.03em;text-transform:uppercase;
+      font-size:0.75rem;
+    }
+
+    /* Videos */
+    .video-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:16px;margin:24px 0 10px;
+    }
+    .video-card .title{font-weight:700;margin-top:8px;}
+    .video-card a{color:var(--accent);font-weight:700;}
+
+    /* Forms */
+    form{display:grid;gap:12px;margin-top:18px;}
+    label{font-weight:700;color:var(--text);font-size:0.9rem;}
+    input,textarea{
+      background:var(--surface-2);
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:12px 14px;
+      color:var(--text);
+      font-size:15px;
+    }
+    input:focus,textarea:focus{outline:2px solid rgba(245,181,68,0.35);}
+    textarea{min-height:120px;resize:vertical;}
+    .form-inline{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+
+    select{
+      background:var(--surface-2);
+      border:1px solid var(--border);
+      border-radius:12px;
+      padding:12px 14px;
+      color:var(--text);
+      font-size:15px;
+    }
+    select:focus{ outline:2px solid rgba(245,181,68,0.35); }
+
+    .reactions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:12px;
+      align-items:center;
+    }
+    .reaction-btn,
+    .report-btn{
+      padding:6px 10px;
+      background:rgba(255,255,255,0.04);
+      border:1px solid var(--border);
+      color:var(--text);
+      border-radius:8px;
+      cursor:pointer;
+      font-size:13px;
+    }
+    .reaction-btn:hover{ background:rgba(255,255,255,0.08); }
+    .report-btn{
+      background:rgba(255,0,0,0.12);
+      border-color:rgba(255,0,0,0.35);
+      color:#ff8a8a;
+    }
+    .report-btn:hover{ background:rgba(255,0,0,0.2); }
+    .reaction-btn[disabled],
+    .report-btn[disabled]{ opacity:0.5; cursor:default; pointer-events:none; }
+
+    .hidden{display:none;}
+    .comentarios-panel{
+      margin-top:10px;
+      padding-top:10px;
+      border-top:1px solid var(--border);
+    }
+    .comentarios-lista{
+      max-height:200px;
+      overflow-y:auto;
+      margin-bottom:8px;
+    }
+    .comentario{
+      font-size:0.82rem;
+      color:var(--text);
+      margin-bottom:8px;
+    }
+    .comentario-header{
+      display:flex;
+      justify-content:flex-start;
+      gap:8px;
+      font-size:0.8rem;
+      opacity:0.9;
+    }
+    .comentario-texto{ margin-top:2px; }
+    .comentarios-form input,
+    .comentarios-form textarea{
+      width:100%;
+      margin-bottom:6px;
+      font-size:0.8rem;
+    }
+    .comentarios-form button{
+      font-size:0.8rem;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,0.04);
+      color:var(--text);
+      cursor:pointer;
+    }
+    .comentarios-form button:hover{ background:rgba(255,255,255,0.08); }
+
+    footer{
+      max-width:1200px;margin:60px auto 0;padding:24px 7vw 0;
+      color:var(--muted);font-size:14px;border-top:1px solid var(--border);
+    }
+    .visitas{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      margin-top:6px;
+      color:var(--muted);
+      font-size:13px;
+      opacity:0.85;
+    }
+
+    @media(max-width:900px){
+      header{ padding:12px 20px; }
+      nav{
+        position:absolute;
+        top:60px;
+        right:0;
+        left:0;
+        flex-direction:column;
+        align-items:flex-start;
+        gap:8px;
+        padding:12px 7vw 14px;
+        background:rgba(11,12,16,0.98);
+        border-bottom:1px solid var(--border);
+        display:none;
+      }
+      nav.open{ display:flex; }
+      nav a{ margin-left:0; }
+      .menu-toggle{ display:inline-flex; }
+      .menu-toggle .menu-label{ display:none; }
+      .hero{
+        padding:130px 7vw 90px;
+        text-align:left;
+      }
+      section{ padding:60px 6vw; }
+    }
+    @media(max-width:700px){
+      .form-inline{ grid-template-columns:1fr; }
+      .cta{ flex-direction:column; align-items:stretch; }
+      .btn{ width:100%; text-align:center; }
+      .badges{ gap:8px; }
+    }
+    @media(max-width:480px){
+      .hero{ padding-top:120px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="#inicio" class="logo">
+      <img src="multimedia/logo.png" alt="Logo AEC" class="logo-img">
+      Academic Evidence Collective
+    </a>
+    <button class="menu-toggle" aria-label="Abrir menú" aria-expanded="false">
+      <span class="menu-icon"></span>
+      <span class="menu-label">Menú</span>
+    </button>
+    <nav>
+      <a href="#inicio">Inicio</a>
+      <a href="#proposito">Propósito</a>
+      <a href="#videos">Videos</a>
+      <a href="#contacto">Participar</a>
+    </nav>
+  </header>
+
+  <audio id="logoSound" src="multimedia/despacito.mp3" preload="auto"></audio>
+
+  <main>
+    <section id="inicio" class="hero">
+      <div>
+        <h1>Archivo de rumores de la comunidad</h1>
+        <p>
+          Contamos lo que se comenta en TikTok y en el Colegio, solo rumores: lo que está aquí no puede ser verdad.
+        </p>
+        <div class="badges">
+          <span class="badge">Solo relatos y chisme</span>
+          <span class="badge">Nada verificado</span>
+          <span class="badge">Cole × TikTok</span>
+        </div>
+        <div class="cta">
+          <button class="btn btn-primary" onclick="document.getElementById('contacto').scrollIntoView({behavior:'smooth'})">Enviar rumor / historia</button>
+          <button class="btn btn-outline" onclick="document.getElementById('videos').scrollIntoView({behavior:'smooth'})">Ver relatos guardados</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="proposito">
+      <h2>Propósito del grupo</h2>
+      <p class="lead">
+        Registramos chismes, rumores y relatos del Colegio y de TikTok. Lo organizamos para que quede guardado,
+        pero sin presentarlo como verdad ni como versión oficial de nada.
+      </p>
+      <div class="pillars">
+        <div class="card">
+          <small>Lo que hacemos</small>
+          <h3>Registramos lo que se comenta</h3>
+          <p>
+            Guardamos rumores, historias y teorías tal como llegan:
+            quién dijo qué, dónde se comentó y cómo se empezó a mover.
+            No confirmamos ni desmentimos, solo dejamos constancia.
+          </p>
+        </div>
+        <div class="card">
+          <small>Cómo funciona</small>
+          <h3>Relatos, no noticias</h3>
+          <p>
+            Todo se trata como relato de la comunidad. Lo que aparece aquí no es evidencia,
+            ni reporte oficial, ni prueba. Es un registro de lo que se ha dicho.
+          </p>
+        </div>
+        <div class="card">
+          <small>Advertencia</small>
+          <h3>No es información verificada</h3>
+          <p>
+            Nada de lo que está en esta página debe tomarse como hecho comprobado.
+            Úsalo como contexto de chisme, no como verdad absoluta.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="videos">
+      <h2>Videos del colectivo</h2>
+      <p class="lead">
+        Aquí se juntan los TikToks donde se cuentan rumores, historias y momentos del cole.
+        Lo que se guarda aquí es solo lo que se comenta, no lo que es verdad.
+      </p>
+      <div class="video-grid" id="videosContainer"></div>
+      <form id="videoForm">
+        <div class="form-inline">
+          <div>
+            <label for="autor">Nombre del autor</label>
+            <input id="autor" type="text" placeholder="Ej. Cuenta anónima" required>
+          </div>
+          <div>
+            <label for="url">URL del video de TikTok</label>
+            <input id="url" type="url" placeholder="https://www.tiktok.com/..." required>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:max-content;">Agregar video de rumor</button>
+      </form>
+    </section>
+
+    <section id="contacto">
+      <h2>Participar con tu relato</h2>
+      <p class="lead">
+        ¿Tienes un chisme, relato o algo que se está comentando en TikTok o en el cole?
+        Déjalo aquí para registrarlo. Recuerda: no se publica como verdad, solo como lo que se dice.<br><br>
+        <strong>Por seguridad, no pongas nombres reales, el nombre del colegio ni edades. Solo puedes enviar hasta 2 relatos cada 2 horas.</strong>
+      </p>
+      <form id="contactForm">
+        <div class="form-inline">
+          <div>
+            <label for="nombre">Alias anónimo (opcional)</label>
+            <input id="nombre" type="text" placeholder="Cómo te llamamos aquí (opcional)">
+          </div>
+          <div>
+            <label for="imagen">Imagen (opcional)</label>
+            <input id="imagen" type="file" accept="image/*">
+          </div>
+        </div>
+
+        <div>
+          <label for="etiqueta">Etiqueta</label>
+          <select id="etiqueta">
+            <option value="general">General</option>
+            <option value="amor">Amor</option>
+            <option value="tiktok">TikTok</option>
+            <option value="peleas">Peleas</option>
+            <option value="profes">Profesores</option>
+            <option value="amigos">Amistades</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="mensaje">Rumor / historia / contexto</label>
+          <textarea id="mensaje" placeholder="Cuéntanos qué se está diciendo"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:max-content;">Enviar</button>
+      </form>
+    </section>
+
+    <section id="rumores">
+      <h2>Rumores enviados</h2>
+      <div id="rumoresLista" class="pillars"></div>
+    </section>
+  </main>
+
+<footer>
+  © 2025 Academic Evidence Collective.
+  <br>
+  <span class="visitas">👁️ Visitas: <span id="visitasCount">0</span></span>
+</footer>
+
+  <!-- Firebase CDN COMPAT (RTDB) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+  <!-- ✅ TU JS RTDB COMPLETO (YA NO HAY JS SUELTO) -->
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDPa3DeBQBwl3riqgiZQYXuwHww5kh1i6Y",
+      authDomain: "academic-evidence-collective.firebaseapp.com",
+      databaseURL: "https://academic-evidence-collective-default-rtdb.firebaseio.com",
+      projectId: "academic-evidence-collective",
+      storageBucket: "academic-evidence-collective.firebasestorage.app",
+      messagingSenderId: "505714699134",
+      appId: "1:505714699134:web:fa39865453a4aa088e612f"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    console.log("🟢 Firebase RTDB conectado correctamente");
+
+    // ------------ FILTRO DE NOMBRES / COLEGIO / EDADES ------------
+    const forbiddenWords = [
+      "alex",
+      "alexis",
+      "alexander",
+      "alexander josue alvarado orozco",
+      "unidad educativa marcabeli"
+    ];
+
+    function contieneVariantesDeAlex(texto){
+      const pattern = /\balex[a-záéíóúüñ]*\b/i;
+      return pattern.test(texto);
+    }
+
+    function contieneEdad(texto){
+      const ageRegex = /\b(\d{1,2})\s*(años|año|anios|anos)\b/i;
+      const match = texto.match(ageRegex);
+      if(!match) return false;
+      const edad = parseInt(match[1],10);
+      return edad > 3 && edad < 25;
+    }
+
+    function contieneDatosProhibidos(texto){
+      const lower = (texto || "").toLowerCase();
+      if(forbiddenWords.some(w => lower.includes(w))) return true;
+      if(contieneVariantesDeAlex(lower)) return true;
+      if(contieneEdad(lower)) return true;
+      return false;
+    }
+
+    // ------------ LIMITES DE ENVÍO (2 rumores / 2 horas) ------------
+    const MAX_RUMORES = 2;
+    const COOLDOWN_MS = 2 * 60 * 60 * 1000;
+    const RUMOR_HISTORY_KEY = 'aec_rumores_historial';
+
+    function obtenerHistorialEnvios(){
+      try{
+        const raw = localStorage.getItem(RUMOR_HISTORY_KEY);
+        if(!raw) return [];
+        const arr = JSON.parse(raw);
+        const ahora = Date.now();
+        return arr.filter(ts => ahora - ts < COOLDOWN_MS);
+      }catch(e){
+        return [];
+      }
+    }
+    function guardarHistorialEnvios(historial){
+      localStorage.setItem(RUMOR_HISTORY_KEY, JSON.stringify(historial));
+    }
+
+    function getLocalMap(key){
+      try{ return JSON.parse(localStorage.getItem(key)) || {}; }
+      catch(e){ return {}; }
+    }
+    function setLocalMap(key, map){
+      localStorage.setItem(key, JSON.stringify(map));
+    }
+
+    const COMMENT_REACTIONS_KEY = "aec_comment_reactions";
+
+    // ------------ CONTADOR USUARIOS (por navegador/dispositivo) ------------
+    const visitasRef = db.ref('stats/usuariosAprox');
+    const visitasCountEl = document.getElementById('visitasCount');
+
+    const yaContado = localStorage.getItem('aec_visited');
+    if(!yaContado){
+      visitasRef.transaction(actual => (actual || 0) + 1);
+      localStorage.setItem('aec_visited','1');
+    }
+
+    visitasRef.on('value', snapshot => {
+      const total = snapshot.val() || 0;
+      if(visitasCountEl){
+        visitasCountEl.textContent = total.toLocaleString('es-ES');
+      }
+    });
+
+    // ------------ NAV RESPONSIVE ------------
+    const menuToggle = document.querySelector('.menu-toggle');
+    const nav = document.querySelector('nav');
+
+    if(menuToggle && nav){
+      menuToggle.addEventListener('click', () => {
+        const isOpen = nav.classList.toggle('open');
+        menuToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      });
+
+      nav.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          if(window.innerWidth <= 900){
+            nav.classList.remove('open');
+            menuToggle.setAttribute('aria-expanded','false');
+          }
+        });
+      });
+    }
+
+    // ------------ SONIDO LOGO ------------
+    const logo = document.querySelector('.logo');
+    const logoSound = document.getElementById('logoSound');
+    if(logo && logoSound){
+      logo.addEventListener('click', () => {
+        logoSound.currentTime = 0;
+        logoSound.play().catch(()=>{});
+      });
+    }
+
+    // ------------ UTIL: TIEMPO RELATIVO ------------
+    function tiempoRelativo(fechaISO){
+      if(!fechaISO) return '';
+      const ahora = new Date();
+      const fecha = new Date(fechaISO);
+      const diffMs = ahora - fecha;
+      if(diffMs < 0) return 'justo ahora';
+      const seg = Math.floor(diffMs/1000);
+      const min = Math.floor(seg/60);
+      const horas = Math.floor(min/60);
+      const dias = Math.floor(horas/24);
+      if(min < 1) return 'justo ahora';
+      if(min < 60) return `hace ${min} min`;
+      if(horas < 24) return `hace ${horas} h`;
+      if(dias < 7) return `hace ${dias} d`;
+      return fecha.toLocaleDateString('es-EC');
+    }
+
+    // ------------ VIDEOS (global en RTDB) ------------
+    const videoForm = document.getElementById('videoForm');
+    const videosContainer = document.getElementById('videosContainer');
+    const videosRef = db.ref('videos');
+    let videos = [];
+
+    function renderVideos(){
+      videosContainer.innerHTML = '';
+      if(videos.length === 0){
+        const empty = document.createElement('p');
+        empty.className = 'lead';
+        empty.textContent = 'Todavía no hay videos registrados. Agrega el primero arriba.';
+        videosContainer.appendChild(empty);
+        return;
+      }
+
+      videos.forEach(({autor,url,titulo}) => {
+        const card = document.createElement('div');
+        card.className = 'card video-card';
+
+        const small = document.createElement('small');
+        small.textContent = autor;
+
+        const titleDiv = document.createElement('div');
+        titleDiv.className = 'title';
+        titleDiv.textContent = titulo || 'Video de rumor de la comunidad';
+
+        const link = document.createElement('a');
+        link.href = url;
+        link.target = '_blank';
+        link.rel = 'noopener';
+        link.textContent = 'Ver en TikTok →';
+
+        card.appendChild(small);
+        card.appendChild(titleDiv);
+        card.appendChild(link);
+
+        videosContainer.appendChild(card);
+      });
+    }
+
+    videosRef.on('value', snapshot => {
+      const data = snapshot.val() || {};
+      videos = Object.values(data).reverse();
+      renderVideos();
+    });
+
+    videoForm.addEventListener('submit', e=>{
+      e.preventDefault();
+      const autor = document.getElementById('autor').value.trim();
+      const url = document.getElementById('url').value.trim();
+      if(!autor || !url) return;
+
+      if(!url.includes('tiktok.com')){
+        alert('Solo se aceptan enlaces de TikTok.');
+        return;
+      }
+
+      const nuevoVideo = { autor, url, titulo:'Nuevo rumor de la comunidad' };
+      const newRef = videosRef.push();
+      newRef.set(nuevoVideo);
+      videoForm.reset();
+    });
+
+    // ------------ COMENTARIOS POR RUMOR ------------
+    function handleCommentReaction(rumorId, comentarioId, tipoNuevo){
+      const commentRef = db.ref('comentarios').child(rumorId).child(comentarioId);
+      const reactions = getLocalMap(COMMENT_REACTIONS_KEY);
+      const tipoAnterior = reactions[comentarioId] || null;
+      const campos = ['like','anger','laugh','surprise'];
+
+      commentRef.transaction(current => {
+        if(!current) return current;
+        campos.forEach(campo => { current[campo] = current[campo] || 0; });
+
+        if(tipoAnterior === tipoNuevo){
+          current[tipoNuevo] = Math.max(0, current[tipoNuevo] - 1);
+        }else{
+          if(tipoAnterior && current[tipoAnterior] != null){
+            current[tipoAnterior] = Math.max(0, current[tipoAnterior] - 1);
+          }
+          current[tipoNuevo] = (current[tipoNuevo] || 0) + 1;
+        }
+        return current;
+      }, (error, committed) => {
+        if(error || !committed) return;
+        if(tipoAnterior === tipoNuevo) delete reactions[comentarioId];
+        else reactions[comentarioId] = tipoNuevo;
+        setLocalMap(COMMENT_REACTIONS_KEY, reactions);
+      });
+    }
+
+    function setupComentariosForRumor(rumorId, panel){
+      panel.innerHTML = '';
+
+      const lista = document.createElement('div');
+      lista.className = 'comentarios-lista';
+
+      const formDiv = document.createElement('div');
+      formDiv.className = 'comentarios-form';
+
+      const aliasInput = document.createElement('input');
+      aliasInput.type = 'text';
+      aliasInput.placeholder = 'Alias (opcional)';
+      aliasInput.className = 'comentario-alias';
+
+      const textoInput = document.createElement('textarea');
+      textoInput.rows = 2;
+      textoInput.placeholder = 'Escribe un comentario...';
+      textoInput.className = 'comentario-texto';
+
+      const sendBtn = document.createElement('button');
+      sendBtn.type = 'button';
+      sendBtn.textContent = 'Enviar comentario';
+      sendBtn.className = 'comentario-enviar';
+
+      formDiv.appendChild(aliasInput);
+      formDiv.appendChild(textoInput);
+      formDiv.appendChild(sendBtn);
+
+      panel.appendChild(lista);
+      panel.appendChild(formDiv);
+
+      const comentariosRef = db.ref('comentarios').child(rumorId);
+      comentariosRef.off();
+
+      comentariosRef.orderByChild('fecha').on('value', snapshot => {
+        lista.innerHTML = '';
+        const reactionMap = getLocalMap(COMMENT_REACTIONS_KEY);
+
+        snapshot.forEach(childSnap => {
+          const c = childSnap.val() || {};
+          const comentarioId = childSnap.key;
+
+          const item = document.createElement('div');
+          item.className = 'comentario';
+
+          const fechaTexto = tiempoRelativo(c.fecha);
+          const alias = c.alias || 'Anónimo';
+
+          const likeCount = c.like || 0;
+          const angerCount = c.anger || 0;
+          const laughCount = c.laugh || 0;
+          const surpriseCount = c.surprise || 0;
+
+          const storedReaction = reactionMap[comentarioId] || null;
+
+          item.innerHTML = `
+            <p class="comentario-header">
+              <strong>${alias}</strong>
+            </p>
+            <p class="comentario-texto">${c.texto || ''}</p>
+            <p class="comentario-meta">
+              <span class="comentario-tiempo">${fechaTexto}</span>
+              <button type="button" class="comentario-meta-btn comentario-like-main">Me gusta</button>
+              <button type="button" class="comentario-meta-btn comentario-reply">Responder</button>
+            </p>
+            <div class="comentario-reacciones">
+              <button type="button" class="comentario-reaccion ${storedReaction === 'like' ? 'comentario-reaccion--active' : ''}" data-type="like">
+                👍 <span>${likeCount}</span>
+              </button>
+              <button type="button" class="comentario-reaccion ${storedReaction === 'anger' ? 'comentario-reaccion--active' : ''}" data-type="anger">
+                😡 <span>${angerCount}</span>
+              </button>
+              <button type="button" class="comentario-reaccion ${storedReaction === 'laugh' ? 'comentario-reaccion--active' : ''}" data-type="laugh">
+                😂 <span>${laughCount}</span>
+              </button>
+              <button type="button" class="comentario-reaccion ${storedReaction === 'surprise' ? 'comentario-reaccion--active' : ''}" data-type="surprise">
+                😮 <span>${surpriseCount}</span>
+              </button>
+            </div>
+          `;
+
+          lista.appendChild(item);
+
+          item.querySelector('.comentario-like-main').addEventListener('click', () => {
+            handleCommentReaction(rumorId, comentarioId, 'like');
+          });
+
+          item.querySelector('.comentario-reply').addEventListener('click', () => {
+            textoInput.focus();
+          });
+
+          item.querySelectorAll('.comentario-reaccion').forEach(btn => {
+            btn.addEventListener('click', () => {
+              const tipo = btn.getAttribute('data-type');
+              handleCommentReaction(rumorId, comentarioId, tipo);
+            });
+          });
+        });
+      });
+
+      sendBtn.addEventListener('click', () => {
+        const alias = aliasInput.value.trim() || 'Anónimo';
+        const texto = textoInput.value.trim();
+        if(!texto) return;
+
+        const textoCompleto = alias + ' ' + texto;
+        if(contieneDatosProhibidos(textoCompleto)){
+          alert('Por seguridad no puedes incluir nombres reales, el nombre del colegio ni edades.');
+          return;
+        }
+
+        const nuevoComentario = {
+          alias,
+          texto,
+          fecha: new Date().toISOString(),
+          like: 0,
+          anger: 0,
+          laugh: 0,
+          surprise: 0
+        };
+
+        const newRef = comentariosRef.push();
+        newRef.set(nuevoComentario, (error) => {
+          if(!error) textoInput.value = '';
+        });
+      });
+    }
+
+    // ------------ RUMORES (global en RTDB) ------------
+    const contactForm = document.getElementById('contactForm');
+    const rumoresLista = document.getElementById('rumoresLista');
+    const rumoresRef = db.ref('rumores');
+    let rumores = [];
+
+    function renderRumores(){
+      rumoresLista.innerHTML = '';
+
+      if(rumores.length === 0){
+        const empty = document.createElement('p');
+        empty.className = 'lead';
+        empty.textContent = 'Todavía no hay rumores registrados. Envía el primero arriba.';
+        rumoresLista.appendChild(empty);
+        return;
+      }
+
+      const reactedMap = getLocalMap('aec_reacted');
+      const reportedMap = getLocalMap('aec_reported');
+
+      rumores.forEach(rumor => {
+        const { id, nombre, mensaje, etiqueta, fecha, likes, dislikes, fuego, neutro, reportes, imagenUrl } = rumor;
+
+        const div = document.createElement('div');
+        div.className = 'card';
+
+        const small = document.createElement('small');
+        const dateTxt = fecha ? new Date(fecha).toLocaleString('es-EC') : 'Fecha desconocida';
+        small.textContent = `${nombre || 'Anónimo'} · ${(etiqueta || 'general')} · ${dateTxt}`;
+
+        const p = document.createElement('p');
+        p.textContent = mensaje;
+
+        div.appendChild(small);
+        div.appendChild(p);
+
+        if(imagenUrl){
+          const img = document.createElement('img');
+          img.src = imagenUrl;
+          img.alt = 'Imagen del relato';
+          img.style.marginTop = '8px';
+          img.style.borderRadius = '12px';
+          div.appendChild(img);
+        }
+
+        const reactions = document.createElement('div');
+        reactions.className = 'reactions';
+
+        const yaReacciono = !!reactedMap[id];
+        const yaReporto  = !!reportedMap[id];
+
+        function createReactionButton(label, count, field){
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'reaction-btn';
+          btn.textContent = `${label} ${count || 0}`;
+          if(yaReacciono) btn.disabled = true;
+
+          btn.addEventListener('click', () => {
+            const refreshedMap = getLocalMap('aec_reacted');
+            if(refreshedMap[id]) return;
+
+            const newValue = (count || 0) + 1;
+            rumoresRef.child(id).update({ [field]: newValue });
+
+            refreshedMap[id] = true;
+            setLocalMap('aec_reacted', refreshedMap);
+
+            reactions.querySelectorAll('.reaction-btn').forEach(b => b.disabled = true);
+          });
+
+          return btn;
+        }
+
+        reactions.appendChild(createReactionButton('👍', likes, 'likes'));
+        reactions.appendChild(createReactionButton('👎', dislikes, 'dislikes'));
+        reactions.appendChild(createReactionButton('🔥', fuego, 'fuego'));
+        reactions.appendChild(createReactionButton('😐', neutro, 'neutro'));
+
+        const commentsToggleBtn = document.createElement('button');
+        commentsToggleBtn.type = 'button';
+        commentsToggleBtn.className = 'reaction-btn';
+        commentsToggleBtn.textContent = '💬 Comentarios';
+        reactions.appendChild(commentsToggleBtn);
+
+        const reportBtn = document.createElement('button');
+        reportBtn.type = 'button';
+        reportBtn.className = 'report-btn';
+        const repCount = reportes || 0;
+        reportBtn.textContent = `🚩 Reportar (${repCount})`;
+        if(yaReporto) reportBtn.disabled = true;
+
+        reportBtn.addEventListener('click', () => {
+          const refreshedReports = getLocalMap('aec_reported');
+          if(refreshedReports[id]) return;
+
+          const rumorRef = rumoresRef.child(id);
+
+          rumorRef.child('reportes').transaction(
+            current => (current || 0) + 1,
+            (error, committed, snapshot) => {
+              if(error || !committed) return;
+              const nuevoTotal = snapshot.val() || 0;
+              if(nuevoTotal >= 5) rumorRef.remove();
+            }
+          );
+
+          refreshedReports[id] = true;
+          setLocalMap('aec_reported', refreshedReports);
+          reportBtn.disabled = true;
+        });
+
+        reactions.appendChild(reportBtn);
+        div.appendChild(reactions);
+
+        const commentsPanel = document.createElement('div');
+        commentsPanel.className = 'comentarios-panel hidden';
+        div.appendChild(commentsPanel);
+
+        commentsToggleBtn.addEventListener('click', () => {
+          commentsPanel.classList.toggle('hidden');
+        });
+
+        setupComentariosForRumor(id, commentsPanel);
+
+        rumoresLista.appendChild(div);
+      });
+    }
+
+    rumoresRef.on('value', snapshot => {
+      rumores = [];
+      snapshot.forEach(child => {
+        rumores.push({ id: child.key, ...child.val() });
+      });
+      rumores.reverse();
+      renderRumores();
+    });
+
+    function crearRumorData(nombre, mensaje, etiqueta, imagenDataUrl){
+      return {
+        nombre,
+        mensaje,
+        etiqueta,
+        fecha: new Date().toISOString(),
+        likes: 0,
+        dislikes: 0,
+        fuego: 0,
+        neutro: 0,
+        reportes: 0,
+        imagenUrl: imagenDataUrl || null
+      };
+    }
+
+    function guardarRumorEnDB(rumor){
+      const newRef = rumoresRef.push();
+      return newRef.set(rumor);
+    }
+
+    contactForm.addEventListener('submit', e=>{
+      e.preventDefault();
+      const nombreRaw = document.getElementById('nombre').value.trim();
+      const nombre = nombreRaw || 'Anónimo';
+      const mensaje = document.getElementById('mensaje').value.trim();
+      const etiqueta = document.getElementById('etiqueta').value;
+      const imagenInput = document.getElementById('imagen');
+      const archivoImagen = imagenInput.files[0];
+
+      if(!mensaje) return;
+
+      const textoCompleto = `${nombre} ${mensaje}`;
+      if(contieneDatosProhibidos(textoCompleto)){
+        alert('Por seguridad no puedes incluir nombres reales, el nombre del colegio ni edades.');
+        return;
+      }
+
+      const ahora = Date.now();
+      let historial = obtenerHistorialEnvios();
+      if(historial.length >= MAX_RUMORES){
+        const proximoDisponible = new Date(historial[0] + COOLDOWN_MS);
+        alert(
+          'Has llegado al límite de 2 relatos en 2 horas.\n\n' +
+          'Podrás volver a enviar después de: ' + proximoDisponible.toLocaleTimeString('es-EC')
+        );
+        return;
+      }
+
+      const btnSubmit = contactForm.querySelector('button[type="submit"]');
+      if(btnSubmit){
+        btnSubmit.disabled = true;
+        btnSubmit.textContent = 'Enviando...';
+      }
+
+      const finalizar = () => {
+        if(btnSubmit){
+          btnSubmit.disabled = false;
+          btnSubmit.textContent = 'Enviar';
+        }
+      };
+
+      const onSuccess = () => {
+        historial.push(ahora);
+        guardarHistorialEnvios(historial);
+        contactForm.reset();
+      };
+
+      if(!archivoImagen){
+        const nuevoRumor = crearRumorData(nombre, mensaje, etiqueta, null);
+        guardarRumorEnDB(nuevoRumor)
+          .then(onSuccess)
+          .catch(err=>{
+            console.error(err);
+            alert('Ocurrió un error al enviar tu relato. Intenta de nuevo.');
+          })
+          .finally(finalizar);
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(ev){
+        const dataUrl = ev.target.result;
+        const nuevoRumor = crearRumorData(nombre, mensaje, etiqueta, dataUrl);
+        guardarRumorEnDB(nuevoRumor)
+          .then(onSuccess)
+          .catch(err=>{
+            console.error(err);
+            alert('Ocurrió un error al enviar tu relato con imagen. Intenta de nuevo.');
+          })
+          .finally(finalizar);
+      };
+      reader.onerror = function(){
+        alert('No se pudo leer la imagen.');
+        finalizar();
+      };
+      reader.readAsDataURL(archivoImagen);
+    });
+  </script>
+
+  <!-- ✅ FIRESTORE IP LOGGER -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+    const cfg = {
+      apiKey: "AIzaSyDPa3DeBQBwl3riqgiZQYXuwHww5kh1i6Y",
+      authDomain: "academic-evidence-collective.firebaseapp.com",
+      projectId: "academic-evidence-collective",
+      storageBucket: "academic-evidence-collective.firebasestorage.app",
+      messagingSenderId: "505714699134",
+      appId: "1:505714699134:web:fa39865453a4aa088e612f"
+    };
+
+    const app = initializeApp(cfg);
+    const fs = getFirestore(app);
+
+    async function getIP(){
+      try{
+        const r = await fetch("https://api.ipify.org?format=json", { cache: "no-store" });
+        const j = await r.json();
+        return j.ip || "unknown";
+      }catch{
+        return "unknown";
+      }
+    }
+
+    try{
+      const ip = await getIP();
+      await addDoc(collection(fs, "visits"), {
+        ip,
+        userAgent: navigator.userAgent,
+        language: navigator.language,
+        screen: `${screen.width}x${screen.height}`,
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        page: location.pathname,
+        createdAt: serverTimestamp()
+      });
+      console.log("🟢 IP registrada en Firestore:", ip);
+    }catch(e){
+      console.error("🔴 Error registrando IP en Firestore:", e);
+    }
+
+    (function () {
+  if (sessionStorage.getItem("visit_notified") === "1") return;
+  sessionStorage.setItem("visit_notified", "1");
+
+  const payload = {
+    hora: new Date().toLocaleString(),
+    pagina: location.pathname,
+    dispositivo: navigator.platform || "N/D",
+    navegador: "N/D",
+    userAgent: navigator.userAgent,
+  };
+
+  fetch("/.netlify/functions/notifyVisit", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "x-admin-key": "PON_AQUI_TU_ADMIN_KEY",
+    },
+    body: JSON.stringify(payload),
+  }).catch(() => {});
+})();
+
+  </script>
+
+</body>
+</html>
